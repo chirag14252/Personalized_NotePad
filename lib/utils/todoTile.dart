@@ -14,18 +14,22 @@ class toDoTiles extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(24.0),
+        padding: const EdgeInsets.only(left: 20, top: 20, right: 20),
         child: Container(
           child: Row(
             children: [
-              Checkbox(value: isCompleted, onChanged: onChanged),
+              Checkbox(
+                value: isCompleted,
+                onChanged: onChanged,
+                activeColor: Colors.black,
+              ),
               Text(
                 "$taskName",
                 style: TextStyle(fontSize: 16),
               ),
             ],
           ),
-          padding: EdgeInsets.all(24),
+          padding: EdgeInsets.all(20),
           decoration: BoxDecoration(
               color: Colors.yellow[400],
               borderRadius: BorderRadius.circular(10)),
