@@ -3,17 +3,26 @@ import 'package:my_note/utils/addDialog.dart';
 import 'package:my_note/utils/todoTile.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  TextEditingController textcon = TextEditingController();
   List tasks = [
     ["task1 completed", true],
     ["task2 completed", false]
   ];
+
+  VoidCallback() {
+    setState(() {
+      tasks.add([textcon, false]);
+    });
+    Navigator.of(context).pop();
+  }
+
   void onChangeDone(bool? done, int index) {
     setState(() {
       tasks[index][1] = !tasks[index][1];
@@ -24,7 +33,18 @@ class _HomePageState extends State<HomePage> {
     showDialog(
         context: context,
         builder: (context) {
-          return addDialog();
+          return addDialog(
+            onAdd: () {
+              setState(() {
+                tasks.add([textcon.text, false]);
+              });
+              Navigator.of(context).pop();
+            },
+            onCancel: () {
+              Navigator.of(context).pop();
+            },
+            textController: textcon,
+          );
         });
   }
 
@@ -32,12 +52,11 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.yellow[200],
+      drawer: Drawer(),
       appBar: AppBar(
-          title: Center(
-            child: Text(
-              "MY NOTES",
-              style: TextStyle(fontSize: 20),
-            ),
+          title: Text(
+            "MY NOTES",
+            style: TextStyle(fontSize: 20),
           ),
           elevation: 0,
           backgroundColor: Colors.yellow[400]),
