@@ -49,6 +49,13 @@ class _HomePageState extends State<HomePage> {
         });
   }
 
+  //delete task
+  void deleteTask(int index) {
+    setState(() {
+      tasks.removeAt(index);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,7 +74,8 @@ class _HomePageState extends State<HomePage> {
             return toDoTiles(
                 taskName: tasks[index][0],
                 isCompleted: tasks[index][1],
-                onChanged: (value) => onChangeDone(value, index));
+                onChanged: (value) => onChangeDone(value, index),
+                deleteFunction: (context) => deleteTask(index));
           }),
       floatingActionButton: FloatingActionButton(
         onPressed: addTask, // an add task screen will appear
