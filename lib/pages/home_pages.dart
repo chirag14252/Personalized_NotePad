@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_note/utils/addDialog.dart';
+import 'package:my_note/utils/drawer_dialog.dart';
 import 'package:my_note/utils/todoTile.dart';
 
 class HomePage extends StatefulWidget {
@@ -52,7 +53,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.yellow[200],
-      drawer: Drawer(),
+      drawer: DrawerCustom(),
       appBar: AppBar(
           title: Text(
             "MY NOTES",

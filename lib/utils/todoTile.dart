@@ -28,6 +28,8 @@ class toDoTiles extends StatelessWidget {
                   "$taskName",
                   style: TextStyle(fontSize: 16),
                 ),
+                SizedBox(width: 110),
+                IconButton(onPressed: () => {}, icon: Icon(Icons.delete))
               ],
             ),
             padding: EdgeInsets.all(20),
