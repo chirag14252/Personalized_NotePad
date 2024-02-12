@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:my_note/database/database.dart';
 import 'package:my_note/utils/addDialog.dart';
 import 'package:my_note/utils/drawer_dialog.dart';
 import 'package:my_note/utils/todoTile.dart';
@@ -12,22 +14,30 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   TextEditingController textcon = TextEditingController();
-  List tasks = [
-    ["task1 completed", true],
-    ["task2 completed", false]
-  ];
+  final _mybox = Hive.box('hive_box');
+  database db = new database();
+
+  @override
+  void initState() {
+    if (_mybox.get("todoList") != null) {
+      db.LoadData();
+    }
+  }
 
   VoidCallback() {
     setState(() {
-      tasks.add([textcon, false]);
+      db.tasks.add([textcon, false]);
+      textcon.clear();
     });
+    db.LoadData();
     Navigator.of(context).pop();
   }
 
   void onChangeDone(bool? done, int index) {
     setState(() {
-      tasks[index][1] = !tasks[index][1];
+      db.tasks[index][1] = !db.tasks[index][1];
     });
+    db.updateData();
   }
 
   void addTask() {
@@ -37,7 +47,7 @@ class _HomePageState extends State<HomePage> {
           return addDialog(
             onAdd: () {
               setState(() {
-                tasks.add([textcon.text, false]);
+                db.tasks.add([textcon.text, false]);
               });
               Navigator.of(context).pop();
             },
@@ -52,8 +62,9 @@ class _HomePageState extends State<HomePage> {
   //delete task
   void deleteTask(int index) {
     setState(() {
-      tasks.removeAt(index);
+      db.tasks.removeAt(index);
     });
+    db.updateData();
   }
 
   @override
@@ -69,11 +80,11 @@ class _HomePageState extends State<HomePage> {
           elevation: 0,
           backgroundColor: Colors.yellow[400]),
       body: ListView.builder(
-          itemCount: tasks.length,
+          itemCount: db.tasks.length,
           itemBuilder: (context, index) {
             return toDoTiles(
-                taskName: tasks[index][0],
-                isCompleted: tasks[index][1],
+                taskName: db.tasks[index][0],
+                isCompleted: db.tasks[index][1],
                 onChanged: (value) => onChangeDone(value, index),
                 deleteFunction: (context) => deleteTask(index));
           }),
